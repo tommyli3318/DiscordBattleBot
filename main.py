@@ -1,8 +1,9 @@
 import discord
 import os
 import random
+from dotenv import load_dotenv
 
-
+load_dotenv()
 client = discord.Client()
 duel = None
 
@@ -73,4 +74,4 @@ async def on_message(message):
 
 
 
-client.run(os.environ['token'])
+client.run(os.getenv('token'))
