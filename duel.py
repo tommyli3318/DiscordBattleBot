@@ -81,9 +81,9 @@ class Duel:
         message += '  🛡️armor = %s\n' % self.p2.armor
         message += '  💥critical strike chance = %s\n' % self.p2.crit
         if self.p2.spell:
-            message += '  📖Spell = %s' % (emoji.get(self.p2.spell) + self.p2.spell)
+            message += '  📖Spell = %s\n' % (emoji.get(self.p2.spell) + self.p2.spell)
         if self.p2.items:
-            message += '  💰Items = %s' % ' '.join(emoji.get(item) + item for item in self.p2.items)
+            message += '  💰Items = %s\n' % ' '.join(emoji.get(item) + item for item in self.p2.items)
         message += '\n```'
         
         return message
