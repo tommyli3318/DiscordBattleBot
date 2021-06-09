@@ -41,11 +41,15 @@ async def on_reaction_add(reaction, user):
             player = duel.p2
         
         if reaction.emoji == '🗡️':
-            print("Assigning Sword to %s" % user.name)
             player.items.add('Sword')
         elif reaction.emoji == '🛡️':
-            print("Assigning Shield to %s" % user.name)
             player.items.add('Shield')
+        elif reaction.emoji == '👕':
+            player.items.add('Shirt')
+            player.health += 50
+        elif reaction.emoji == '🩸':
+            player.items.add('Blood')
+            player.lifesteal = 15
     
     if duel.both_players_picked():
         await reaction.message.channel.send(":crossed_swords:Duel starting between %s and %s!:crossed_swords:\n%s goes second and gets a +1 extra base damage.\nType !duelhelp for list of commands\n\n**Start of %s's turn**" % (duel.p1.name, duel.p2.name, duel.inactive_player.name, duel.active_player.name))
@@ -78,9 +82,9 @@ async def on_message(message):
                 await spell_prompt.add_reaction(spell)
 
             
-            # Item ideas (passives) - Sword +dmg, Shield +armor, Bow +atk twice, +lifesteal, +hp, Glove +%crit, charm - %chance to steal X hp
-            items = ['🗡️', '🛡️']
-            item_prompt = await message.channel.send("Choose an item:\n🗡️Sword: +3 damage modifier\n🛡️Shield: +3 armor")
+            # Item ideas (passives) - Sword +dmg, Shield +armor, +hp, +lifesteal, Bow +atk twice, Glove +%crit, charm - %chance to steal X hp
+            items = ['🗡️', '🛡️','👕','🩸'] # '🏹','🥊'
+            item_prompt = await message.channel.send("Choose an item:\n🗡️Sword: +3 damage modifier\n🛡️Shield: +3 armor\n👕Shirt: +50 max health\n🩸Blood: +15% lifesteal\n")
             for item in items:
                 await item_prompt.add_reaction(item)
             
@@ -95,7 +99,7 @@ async def on_message(message):
         else:
             if message.content == '!attack':
                 msg_to_send, game_ended = duel.attack()
-            elif message.content == '!spell':
+            elif message.content == '!spell': # TODO: change spell to "skill" or "action"?
                 msg_to_send, game_ended = duel.spell()
             
             if not game_ended and duel.active_player.name == client.user.name: # playing against bot

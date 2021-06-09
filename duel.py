@@ -27,11 +27,16 @@ class Duel:
         explanation += '```\n'
         
         self.inactive_player.health -= damage_dealt
-        
+
         message = '%s attacked %s for %s ⚔️damage' % (self.active_player.name, self.inactive_player.name, damage_dealt)
         message += '_💥critical strike x2 damage_!\n' if crit else '\n'
         message += explanation
-                
+        
+        if self.active_player.lifesteal > 0:
+            healing = round(damage_dealt * self.active_player.lifesteal / 100)
+            self.active_player.health += healing
+            message += '%s Healed for +%s from lifesteal.\n' % (self.active_player.name, healing)
+
         if self.inactive_player.health <= 0: # game over
             return message + '🥳%s wins the duel🎉' % (self.active_player.name), True
         else:
